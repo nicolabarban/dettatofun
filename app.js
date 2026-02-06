@@ -10,13 +10,21 @@ const els = {
   runOcr: document.getElementById("runOcr"),
   ocrStatus: document.getElementById("ocrStatus"),
   ocrText: document.getElementById("ocrText"),
+  ocrBox: document.getElementById("ocrBox"),
+  toggleText: document.getElementById("toggleText"),
   childText: document.getElementById("childText"),
   rate: document.getElementById("rate"),
+  pauseLength: document.getElementById("pauseLength"),
   chunk: document.getElementById("chunk"),
+  engine: document.getElementById("engine"),
+  voice: document.getElementById("voice"),
   play: document.getElementById("play"),
   pause: document.getElementById("pause"),
   stop: document.getElementById("stop"),
   saveAttempt: document.getElementById("saveAttempt"),
+  errorCount: document.getElementById("errorCount"),
+  selfNote: document.getElementById("selfNote"),
+  saveSelf: document.getElementById("saveSelf"),
   history: document.getElementById("history"),
 };
 
@@ -30,6 +38,7 @@ let pauseTimer = null;
 let pauseRemaining = 0;
 let pauseStartedAt = 0;
 let dettatiList = [];
+let selectedVoice = null;
 
 pdfjsLib.GlobalWorkerOptions.workerSrc =
   "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
@@ -135,11 +144,20 @@ function renderHistory() {
     .slice()
     .reverse()
     .map((item) => {
+      const errorText =
+        typeof item.errorCount === "number"
+          ? `<div>Errori autocorretti: ${item.errorCount}</div>`
+          : "";
+      const noteText = item.selfNote
+        ? `<div>Nota: ${item.selfNote}</div>`
+        : "";
       return `
       <div class="history-card">
         <h3>${new Date(item.date).toLocaleDateString()}</h3>
         <div>Precisione: ${formatPercent(item.accuracy)}</div>
         <div>Parole: ${item.wordCount}</div>
+        ${errorText}
+        ${noteText}
       </div>
     `;
     })
@@ -204,6 +222,7 @@ function playQueue() {
   const utterance = new SpeechSynthesisUtterance(item.text);
   utterance.rate = item.rate;
   utterance.lang = "it-IT";
+  if (selectedVoice) utterance.voice = selectedVoice;
   utterance.onend = () => {
     readIndex += 1;
     playQueue();
@@ -213,7 +232,7 @@ function playQueue() {
 
 function speakChunks(text, chunkSize, rate) {
   stopReading();
-  const longPauseMs = 900;
+  const longPauseMs = Number(els.pauseLength.value);
   readQueue = buildReadQueue(text, chunkSize, rate, longPauseMs);
   if (readQueue.length === 0) return;
   readIndex = 0;
@@ -302,6 +321,8 @@ function saveAttempt() {
     date: new Date().toISOString(),
     accuracy,
     wordCount,
+    errorCount: null,
+    selfNote: "",
   });
   setStudent(student);
   renderProgress();
@@ -309,11 +330,53 @@ function saveAttempt() {
   setStatus("Correzione salvata.");
 }
 
+function saveSelfCheck() {
+  if (!currentStudent) {
+    setStatus("Inserisci prima il nome.");
+    return;
+  }
+  const student = getStudent(currentStudent);
+  if (student.attempts.length === 0) {
+    setStatus("Salva prima la correzione.");
+    return;
+  }
+  const last = student.attempts[student.attempts.length - 1];
+  const count = els.errorCount.value.trim();
+  last.errorCount = count === "" ? null : Number(count);
+  last.selfNote = els.selfNote.value.trim();
+  setStudent(student);
+  renderHistory();
+  setStatus("Autocorrezione salvata.");
+}
+
+function loadVoices() {
+  const voices = window.speechSynthesis.getVoices();
+  const italian = voices.filter((v) => v.lang.toLowerCase().startsWith("it"));
+  const list = italian.length ? italian : voices;
+  els.voice.innerHTML = list
+    .map(
+      (v, idx) =>
+        `<option value="${idx}">${v.name} (${v.lang})</option>`
+    )
+    .join("");
+  selectedVoice = list[0] || null;
+}
+
+function updateSelectedVoice() {
+  const voices = window.speechSynthesis.getVoices();
+  const italian = voices.filter((v) => v.lang.toLowerCase().startsWith("it"));
+  const list = italian.length ? italian : voices;
+  selectedVoice = list[Number(els.voice.value)] || null;
+}
+
 async function loadDettati() {
   try {
     const res = await fetch("dettati.json");
     if (!res.ok) throw new Error("Fetch failed");
-    dettatiList = await res.json();
+    const all = await res.json();
+    const curatedIds = new Set(["4.1", "4.2", "4.3", "4.4", "4.5", "4.6"]);
+    dettatiList = all.filter((item) => curatedIds.has(item.id));
+    if (dettatiList.length === 0) dettatiList = all.slice(0, 6);
     els.dettatiSelect.innerHTML = dettatiList
       .map(
         (item, idx) =>
@@ -339,6 +402,11 @@ els.saveStudent.addEventListener("click", () => {
   setStatus(`Benvenuto ${name}!`);
 });
 
+els.toggleText.addEventListener("click", () => {
+  const hidden = els.ocrBox.classList.toggle("hidden");
+  els.toggleText.textContent = hidden ? "Mostra testo" : "Nascondi testo";
+});
+
 els.loadDettato.addEventListener("click", () => {
   const idx = Number(els.dettatiSelect.value);
   const dettato = dettatiList[idx];
@@ -347,6 +415,10 @@ els.loadDettato.addEventListener("click", () => {
     return;
   }
   els.ocrText.value = dettato.text;
+  if (els.ocrBox.classList.contains("hidden")) {
+    els.ocrBox.classList.remove("hidden");
+    els.toggleText.textContent = "Nascondi testo";
+  }
   els.childText.value = "";
   setStatus(`Dettato caricato: ${dettato.title}`);
 });
@@ -357,9 +429,13 @@ els.play.addEventListener("click", () => {
   const text = els.ocrText.value;
   const rate = Number(els.rate.value);
   const chunkSize = Number(els.chunk.value);
+  const engine = els.engine.value;
   if (!text.trim()) {
     setStatus("Nessun testo da leggere.");
     return;
+  }
+  if (engine !== "browser") {
+    setStatus("Motore non configurato. Uso il browser.");
   }
   speakChunks(text, chunkSize, rate);
 });
@@ -392,7 +468,11 @@ els.pause.addEventListener("click", () => {
 
 els.stop.addEventListener("click", stopReading);
 els.saveAttempt.addEventListener("click", saveAttempt);
+els.saveSelf.addEventListener("click", saveSelfCheck);
+els.voice.addEventListener("change", updateSelectedVoice);
 
+loadVoices();
+window.speechSynthesis.onvoiceschanged = loadVoices;
 loadDettati();
 renderProgress();
 renderHistory();

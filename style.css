@@ -107,6 +107,11 @@ body {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
 }
 
+.btn.small {
+  padding: 8px 12px;
+  font-size: 14px;
+}
+
 .btn.primary {
   background: var(--accent);
   color: #fff;
@@ -178,6 +183,10 @@ textarea {
 
 .history-card h3 {
   margin: 0 0 6px;
+}
+
+.hidden {
+  display: none;
 }
 
 @media (max-width: 640px) {

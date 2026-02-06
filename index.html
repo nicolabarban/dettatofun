@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Dettati Magici</title>
+    <title>I Dettati Magici di Alice</title>
     <link rel="stylesheet" href="style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -14,9 +14,9 @@
   <body>
     <main class="app">
       <header class="hero">
-        <div class="badge">Dettati Magici</div>
-        <h1>Leggi, ascolta, riscrivi</h1>
-        <p>Carica una foto o un PDF. L app legge lentamente e tu puoi correggere.</p>
+        <div class="badge">I Dettati Magici di Alice</div>
+        <h1>Ascolta, riscrivi, migliora</h1>
+        <p>Carica una foto o un PDF. L'app legge lentamente e tu puoi correggere.</p>
       </header>
 
       <section class="panel">
@@ -55,8 +55,13 @@
       <section class="panel">
         <div class="grid">
           <div>
-            <h2>Testo letto</h2>
-            <textarea id="ocrText" placeholder="Il testo apparira qui"></textarea>
+            <div class="row">
+              <h2>Testo letto</h2>
+              <button id="toggleText" class="btn small">Mostra testo</button>
+            </div>
+            <div id="ocrBox" class="hidden">
+              <textarea id="ocrText" placeholder="Il testo apparira qui"></textarea>
+            </div>
           </div>
           <div>
             <h2>Testo bambino</h2>
@@ -69,13 +74,44 @@
             <input id="rate" type="range" min="0.6" max="1.2" step="0.1" value="0.8" />
           </div>
           <div class="slider">
+            <label for="pauseLength">Pausa dopo / (ms)</label>
+            <input id="pauseLength" type="range" min="400" max="1600" step="100" value="900" />
+          </div>
+          <div class="slider">
             <label for="chunk">Parole per passo</label>
             <input id="chunk" type="range" min="3" max="12" step="1" value="6" />
+          </div>
+          <div class="slider">
+            <label for="engine">Motore voce</label>
+            <select id="engine">
+              <option value="browser">Browser (consigliato)</option>
+              <option value="openai">OpenAI (da configurare)</option>
+              <option value="gemini">Gemini (da configurare)</option>
+            </select>
+          </div>
+          <div class="slider">
+            <label for="voice">Voce</label>
+            <select id="voice"></select>
           </div>
           <button id="play" class="btn primary">Leggi</button>
           <button id="pause" class="btn">Pausa</button>
           <button id="stop" class="btn">Stop</button>
           <button id="saveAttempt" class="btn success">Salva correzione</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Autocorrezione</h2>
+        <div class="row">
+          <label class="field">
+            <span>Numero di errori trovati</span>
+            <input id="errorCount" type="number" min="0" placeholder="0" />
+          </label>
+          <label class="field">
+            <span>Note del bambino</span>
+            <input id="selfNote" type="text" placeholder="Es. Ho sbagliato gli accenti" />
+          </label>
+          <button id="saveSelf" class="btn success">Salva autocorrezione</button>
         </div>
       </section>
 
