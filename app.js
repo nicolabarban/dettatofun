@@ -431,9 +431,7 @@ async function loadDettati() {
     const res = await fetch("dettati.json");
     if (!res.ok) throw new Error("Fetch failed");
     const all = await res.json();
-    const curatedIds = new Set(["4.1", "4.2", "4.3", "4.4", "4.5", "4.6"]);
-    dettatiList = all.filter((item) => curatedIds.has(item.id));
-    if (dettatiList.length === 0) dettatiList = all.slice(0, 6);
+    dettatiList = all;
     els.dettatiSelect.innerHTML = dettatiList
       .map(
         (item, idx) =>
