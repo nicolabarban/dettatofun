@@ -95,6 +95,7 @@
           <button id="play" class="btn primary">Leggi</button>
           <button id="pause" class="btn">Pausa</button>
           <button id="stop" class="btn">Stop</button>
+          <button id="compare" class="btn">Confronta</button>
           <button id="saveAttempt" class="btn success">Salva correzione</button>
         </div>
         <div class="row settings">
@@ -104,6 +105,19 @@
           </label>
           <button id="saveBackend" class="btn">Salva URL</button>
         </div>
+        <div id="compareResult" class="status small hidden"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Scrittura a mano (foto)</h2>
+        <div class="row">
+          <label class="file-box" for="handwritingInput">
+            <input id="handwritingInput" type="file" accept="image/*" />
+            <span>Carica foto del quaderno</span>
+          </label>
+          <button id="runHtr" class="btn">Trascrivi in testo bambino</button>
+        </div>
+        <div class="status small">La trascrizione usa OpenAI Vision nel backend.</div>
       </section>
 
       <section class="panel">

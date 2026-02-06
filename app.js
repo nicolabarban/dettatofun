@@ -21,9 +21,13 @@ const els = {
   play: document.getElementById("play"),
   pause: document.getElementById("pause"),
   stop: document.getElementById("stop"),
+  compare: document.getElementById("compare"),
   saveAttempt: document.getElementById("saveAttempt"),
   backendUrl: document.getElementById("backendUrl"),
   saveBackend: document.getElementById("saveBackend"),
+  compareResult: document.getElementById("compareResult"),
+  handwritingInput: document.getElementById("handwritingInput"),
+  runHtr: document.getElementById("runHtr"),
   errorCount: document.getElementById("errorCount"),
   selfNote: document.getElementById("selfNote"),
   saveSelf: document.getElementById("saveSelf"),
@@ -190,6 +194,11 @@ function renderHistory() {
 
 function setStatus(text) {
   els.ocrStatus.textContent = text;
+}
+
+function setCompareResult(text) {
+  els.compareResult.textContent = text;
+  els.compareResult.classList.remove("hidden");
 }
 
 function stopReading() {
@@ -463,6 +472,25 @@ async function fetchTtsAudio(engine, text, speed) {
   return response.blob();
 }
 
+async function fetchHtrText(imageBase64) {
+  const baseUrl = getBackendUrl().trim();
+  if (!baseUrl) {
+    setStatus("Inserisci l'URL del backend TTS.");
+    throw new Error("Missing backend URL");
+  }
+  const response = await fetch(`${baseUrl}/htr/openai`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ image: imageBase64 }),
+  });
+  if (!response.ok) {
+    const err = await response.text();
+    throw new Error(err || "HTR failed");
+  }
+  const json = await response.json();
+  return json.text || "";
+}
+
 function playAudioBlob(blob) {
   return new Promise((resolve, reject) => {
     const url = URL.createObjectURL(blob);
@@ -601,6 +629,21 @@ els.play.addEventListener("click", () => {
   );
 });
 
+els.compare.addEventListener("click", () => {
+  const original = els.ocrText.value;
+  const attempt = els.childText.value;
+  if (!original.trim() || !attempt.trim()) {
+    setCompareResult("Inserisci sia il testo letto sia il testo del bambino.");
+    return;
+  }
+  const accuracy = calcAccuracy(original, attempt);
+  const origWords = normalizeText(original).split(" ").filter(Boolean).length;
+  const attWords = normalizeText(attempt).split(" ").filter(Boolean).length;
+  setCompareResult(
+    `Confronto: precisione ${formatPercent(accuracy)}. Parole: ${attWords}/${origWords}.`
+  );
+});
+
 els.pause.addEventListener("click", () => {
   if (!isReading) return;
   if (cloudMode) {
@@ -642,6 +685,27 @@ els.stop.addEventListener("click", stopReading);
 els.saveAttempt.addEventListener("click", saveAttempt);
 els.saveSelf.addEventListener("click", saveSelfCheck);
 els.voice.addEventListener("change", updateSelectedVoice);
+
+els.runHtr.addEventListener("click", async () => {
+  const file = els.handwritingInput.files[0];
+  if (!file) {
+    setStatus("Carica una foto del quaderno.");
+    return;
+  }
+  setStatus("Trascrizione in corso...");
+  const reader = new FileReader();
+  reader.onload = async () => {
+    try {
+      const base64 = reader.result;
+      const text = await fetchHtrText(base64);
+      els.childText.value = text.trim();
+      setStatus("Trascrizione completata.");
+    } catch (error) {
+      setStatus("Errore nella trascrizione.");
+    }
+  };
+  reader.readAsDataURL(file);
+});
 
 loadVoices();
 window.speechSynthesis.onvoiceschanged = loadVoices;

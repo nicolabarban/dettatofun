@@ -20,6 +20,9 @@ L'app statica su GitHub Pages chiama un backend online che genera l'audio.
 Vedi `server/.env.example`.
 Per Gemini serve anche `GOOGLE_APPLICATION_CREDENTIALS` (file JSON del service account).
 
+### HTR (scrittura a mano)
+L'endpoint `POST /htr/openai` usa il modello vision di OpenAI per trascrivere testo da immagini.
+
 ### Avvio locale
 ```bash
 cd /Users/nicolabarban/Library/CloudStorage/Dropbox/dettato_fun/server

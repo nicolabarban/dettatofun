@@ -25,6 +25,21 @@ const OPENAI_VOICES = new Set([
   "marin",
   "cedar",
 ]);
+const DEFAULT_VISION_MODEL = process.env.OPENAI_VISION_MODEL || "gpt-4.1-mini";
+
+function extractOutputText(payload) {
+  if (payload?.output_text) return payload.output_text;
+  if (Array.isArray(payload?.output)) {
+    for (const item of payload.output) {
+      const content = item?.content || [];
+      for (const part of content) {
+        if (part?.type === "output_text" && part?.text) return part.text;
+        if (part?.type === "text" && part?.text) return part.text;
+      }
+    }
+  }
+  return "";
+}
 
 function clamp(value, min, max) {
   return Math.max(min, Math.min(max, value));
@@ -82,6 +97,62 @@ app.post("/tts/openai", async (req, res) => {
     res.send(audioBuffer);
   } catch (error) {
     res.status(500).json({ error: "OpenAI TTS failed" });
+  }
+});
+
+app.post("/htr/openai", async (req, res) => {
+  try {
+    const apiKey = process.env.OPENAI_API_KEY;
+    if (!apiKey) {
+      res.status(500).json({ error: "OPENAI_API_KEY missing" });
+      return;
+    }
+    const image = String(req.body?.image || "").trim();
+    if (!image) {
+      res.status(400).json({ error: "image is required" });
+      return;
+    }
+
+    const response = await fetch("https://api.openai.com/v1/responses", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: DEFAULT_VISION_MODEL,
+        input: [
+          {
+            role: "user",
+            content: [
+              {
+                type: "input_text",
+                text:
+                  "Trascrivi fedelmente il testo scritto a mano nell'immagine. " +
+                  "Restituisci solo il testo, senza commenti.",
+              },
+              {
+                type: "input_image",
+                image_url: image,
+                detail: "high",
+              },
+            ],
+          },
+        ],
+      }),
+    });
+
+    if (!response.ok) {
+      const errText = await response.text();
+      res.status(500).send(errText);
+      return;
+    }
+
+    const json = await response.json();
+    const text = extractOutputText(json);
+    res.json({ text });
+  } catch (error) {
+    res.status(500).json({ error: "HTR failed" });
   }
 });
 

@@ -134,6 +134,10 @@ body {
   opacity: 0.8;
 }
 
+.status.hidden {
+  display: none;
+}
+
 .settings {
   margin-top: 12px;
 }
