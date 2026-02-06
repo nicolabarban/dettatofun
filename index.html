@@ -32,6 +32,17 @@
 
       <section class="panel">
         <div class="row">
+          <label class="field">
+            <span>Dettati disponibili</span>
+            <select id="dettatiSelect"></select>
+          </label>
+          <button id="loadDettato" class="btn">Carica dettato</button>
+        </div>
+        <div class="status">Usa un dettato pronto o fai OCR da immagine.</div>
+      </section>
+
+      <section class="panel">
+        <div class="row">
           <label class="file-box" for="fileInput">
             <input id="fileInput" type="file" accept="image/*,.pdf" />
             <span>Carica immagine o PDF</span>

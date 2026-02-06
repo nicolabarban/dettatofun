@@ -4,6 +4,8 @@ const els = {
   studentName: document.getElementById("studentName"),
   saveStudent: document.getElementById("saveStudent"),
   progressCard: document.getElementById("progressCard"),
+  dettatiSelect: document.getElementById("dettatiSelect"),
+  loadDettato: document.getElementById("loadDettato"),
   fileInput: document.getElementById("fileInput"),
   runOcr: document.getElementById("runOcr"),
   ocrStatus: document.getElementById("ocrStatus"),
@@ -20,8 +22,14 @@ const els = {
 
 const STORE_KEY = "dettati-magici";
 let currentStudent = null;
-let currentUtteranceQueue = [];
 let isReading = false;
+let isPaused = false;
+let readQueue = [];
+let readIndex = 0;
+let pauseTimer = null;
+let pauseRemaining = 0;
+let pauseStartedAt = 0;
+let dettatiList = [];
 
 pdfjsLib.GlobalWorkerOptions.workerSrc =
   "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
@@ -144,41 +152,73 @@ function setStatus(text) {
 
 function stopReading() {
   window.speechSynthesis.cancel();
-  currentUtteranceQueue = [];
+  if (pauseTimer) {
+    clearTimeout(pauseTimer);
+    pauseTimer = null;
+  }
+  readQueue = [];
+  readIndex = 0;
+  pauseRemaining = 0;
+  pauseStartedAt = 0;
   isReading = false;
+  isPaused = false;
+}
+
+function buildReadQueue(text, chunkSize, rate, longPauseMs) {
+  const parts = text.split("/").map((p) => p.trim()).filter(Boolean);
+  const queue = [];
+  parts.forEach((part, idx) => {
+    const words = part.split(/\s+/).filter(Boolean);
+    for (let i = 0; i < words.length; i += chunkSize) {
+      queue.push({
+        type: "speech",
+        text: words.slice(i, i + chunkSize).join(" "),
+        rate,
+      });
+    }
+    if (idx < parts.length - 1) {
+      queue.push({ type: "pause", ms: longPauseMs });
+    }
+  });
+  return queue;
+}
+
+function playQueue() {
+  if (readIndex >= readQueue.length) {
+    isReading = false;
+    isPaused = false;
+    return;
+  }
+  const item = readQueue[readIndex];
+  if (item.type === "pause") {
+    pauseRemaining = item.ms;
+    pauseStartedAt = Date.now();
+    pauseTimer = setTimeout(() => {
+      pauseTimer = null;
+      readIndex += 1;
+      playQueue();
+    }, pauseRemaining);
+    return;
+  }
+
+  const utterance = new SpeechSynthesisUtterance(item.text);
+  utterance.rate = item.rate;
+  utterance.lang = "it-IT";
+  utterance.onend = () => {
+    readIndex += 1;
+    playQueue();
+  };
+  window.speechSynthesis.speak(utterance);
 }
 
 function speakChunks(text, chunkSize, rate) {
   stopReading();
-  const words = text.split(/\s+/).filter(Boolean);
-  if (words.length === 0) return;
-  const chunks = [];
-  for (let i = 0; i < words.length; i += chunkSize) {
-    chunks.push(words.slice(i, i + chunkSize).join(" "));
-  }
-  currentUtteranceQueue = chunks.map((chunk) => {
-    const utterance = new SpeechSynthesisUtterance(chunk);
-    utterance.rate = rate;
-    utterance.lang = "it-IT";
-    return utterance;
-  });
-
-  let index = 0;
-  const speakNext = () => {
-    if (index >= currentUtteranceQueue.length) {
-      isReading = false;
-      return;
-    }
-    isReading = true;
-    const utterance = currentUtteranceQueue[index];
-    utterance.onend = () => {
-      index += 1;
-      speakNext();
-    };
-    window.speechSynthesis.speak(utterance);
-  };
-
-  speakNext();
+  const longPauseMs = 900;
+  readQueue = buildReadQueue(text, chunkSize, rate, longPauseMs);
+  if (readQueue.length === 0) return;
+  readIndex = 0;
+  isReading = true;
+  playQueue();
 }
 
 async function renderPdfToCanvas(file) {
@@ -269,6 +309,22 @@ function saveAttempt() {
   setStatus("Correzione salvata.");
 }
 
+async function loadDettati() {
+  try {
+    const res = await fetch("dettati.json");
+    if (!res.ok) throw new Error("Fetch failed");
+    dettatiList = await res.json();
+    els.dettatiSelect.innerHTML = dettatiList
+      .map(
+        (item, idx) =>
+          `<option value="${idx}">${item.id} - ${item.title}</option>`
+      )
+      .join("");
+  } catch (error) {
+    els.dettatiSelect.innerHTML = "<option>Dettati non disponibili</option>";
+  }
+}
+
 els.saveStudent.addEventListener("click", () => {
   const name = els.studentName.value.trim();
   if (!name) {
@@ -281,6 +337,18 @@ els.saveStudent.addEventListener("click", () => {
   renderProgress();
   renderHistory();
   setStatus(`Benvenuto ${name}!`);
+});
+
+els.loadDettato.addEventListener("click", () => {
+  const idx = Number(els.dettatiSelect.value);
+  const dettato = dettatiList[idx];
+  if (!dettato) {
+    setStatus("Seleziona un dettato.");
+    return;
+  }
+  els.ocrText.value = dettato.text;
+  els.childText.value = "";
+  setStatus(`Dettato caricato: ${dettato.title}`);
 });
 
 els.runOcr.addEventListener("click", runOcr);
@@ -298,15 +366,33 @@ els.play.addEventListener("click", () => {
 
 els.pause.addEventListener("click", () => {
   if (!isReading) return;
-  if (window.speechSynthesis.paused) {
-    window.speechSynthesis.resume();
-  } else {
+  if (isPaused) {
+    if (window.speechSynthesis.paused) window.speechSynthesis.resume();
+    if (pauseRemaining > 0) {
+      pauseStartedAt = Date.now();
+      pauseTimer = setTimeout(() => {
+        pauseTimer = null;
+        readIndex += 1;
+        playQueue();
+      }, pauseRemaining);
+    }
+    isPaused = false;
+    return;
+  }
+  if (window.speechSynthesis.speaking) {
     window.speechSynthesis.pause();
   }
+  if (pauseTimer) {
+    clearTimeout(pauseTimer);
+    pauseTimer = null;
+    pauseRemaining = Math.max(0, pauseRemaining - (Date.now() - pauseStartedAt));
+  }
+  isPaused = true;
 });
 
 els.stop.addEventListener("click", stopReading);
 els.saveAttempt.addEventListener("click", saveAttempt);
 
+loadDettati();
 renderProgress();
 renderHistory();
