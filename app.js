@@ -22,6 +22,8 @@ const els = {
   pause: document.getElementById("pause"),
   stop: document.getElementById("stop"),
   saveAttempt: document.getElementById("saveAttempt"),
+  backendUrl: document.getElementById("backendUrl"),
+  saveBackend: document.getElementById("saveBackend"),
   errorCount: document.getElementById("errorCount"),
   selfNote: document.getElementById("selfNote"),
   saveSelf: document.getElementById("saveSelf"),
@@ -29,6 +31,7 @@ const els = {
 };
 
 const STORE_KEY = "dettati-magici";
+const BACKEND_KEY = "dettati-tts-backend";
 let currentStudent = null;
 let isReading = false;
 let isPaused = false;
@@ -39,6 +42,9 @@ let pauseRemaining = 0;
 let pauseStartedAt = 0;
 let dettatiList = [];
 let selectedVoice = null;
+let currentAudio = null;
+let cloudMode = false;
+let cloudStop = false;
 
 pdfjsLib.GlobalWorkerOptions.workerSrc =
   "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
@@ -174,12 +180,18 @@ function stopReading() {
     clearTimeout(pauseTimer);
     pauseTimer = null;
   }
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio.currentTime = 0;
+    currentAudio = null;
+  }
   readQueue = [];
   readIndex = 0;
   pauseRemaining = 0;
   pauseStartedAt = 0;
   isReading = false;
   isPaused = false;
+  cloudStop = true;
 }
 
 function buildReadQueue(text, chunkSize, rate, longPauseMs) {
@@ -237,6 +249,7 @@ function speakChunks(text, chunkSize, rate) {
   if (readQueue.length === 0) return;
   readIndex = 0;
   isReading = true;
+  cloudMode = false;
   playQueue();
 }
 
@@ -388,6 +401,99 @@ async function loadDettati() {
   }
 }
 
+function getBackendUrl() {
+  return localStorage.getItem(BACKEND_KEY) || "";
+}
+
+function setBackendUrl(value) {
+  localStorage.setItem(BACKEND_KEY, value);
+}
+
+async function fetchTtsAudio(engine, text, speed) {
+  const baseUrl = getBackendUrl().trim();
+  if (!baseUrl) {
+    setStatus("Inserisci l'URL del backend TTS.");
+    throw new Error("Missing backend URL");
+  }
+  const endpoint = engine === "openai" ? "/tts/openai" : "/tts/gemini";
+  const response = await fetch(`${baseUrl}${endpoint}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ text, speed }),
+  });
+  if (!response.ok) {
+    const err = await response.text();
+    throw new Error(err || "TTS failed");
+  }
+  return response.blob();
+}
+
+function playAudioBlob(blob) {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(blob);
+    const audio = new Audio(url);
+    currentAudio = audio;
+    audio.onended = () => {
+      URL.revokeObjectURL(url);
+      currentAudio = null;
+      resolve();
+    };
+    audio.onerror = (err) => {
+      URL.revokeObjectURL(url);
+      currentAudio = null;
+      reject(err);
+    };
+    audio.play();
+  });
+}
+
+async function sleepWithPause(ms) {
+  let remaining = ms;
+  while (remaining > 0 && !cloudStop) {
+    if (isPaused) {
+      await new Promise((r) => setTimeout(r, 200));
+      continue;
+    }
+    const chunk = Math.min(200, remaining);
+    const start = Date.now();
+    await new Promise((r) => setTimeout(r, chunk));
+    remaining -= Date.now() - start;
+  }
+}
+
+async function playCloudQueue(text, chunkSize, speed, longPauseMs, engine) {
+  stopReading();
+  cloudMode = true;
+  cloudStop = false;
+  isReading = true;
+  const parts = text.split("/").map((p) => p.trim()).filter(Boolean);
+  const queue = [];
+  parts.forEach((part, idx) => {
+    const words = part.split(/\s+/).filter(Boolean);
+    for (let i = 0; i < words.length; i += chunkSize) {
+      queue.push({ type: "speech", text: words.slice(i, i + chunkSize).join(" ") });
+    }
+    if (idx < parts.length - 1) {
+      queue.push({ type: "pause", ms: longPauseMs });
+    }
+  });
+
+  for (const item of queue) {
+    if (cloudStop) break;
+    while (isPaused) {
+      await new Promise((r) => setTimeout(r, 200));
+    }
+    if (item.type === "pause") {
+      await sleepWithPause(item.ms);
+      continue;
+    }
+    const blob = await fetchTtsAudio(engine, item.text, speed);
+    await playAudioBlob(blob);
+  }
+  isReading = false;
+  cloudMode = false;
+}
+
 els.saveStudent.addEventListener("click", () => {
   const name = els.studentName.value.trim();
   if (!name) {
@@ -405,6 +511,16 @@ els.saveStudent.addEventListener("click", () => {
 els.toggleText.addEventListener("click", () => {
   const hidden = els.ocrBox.classList.toggle("hidden");
   els.toggleText.textContent = hidden ? "Mostra testo" : "Nascondi testo";
+});
+
+els.saveBackend.addEventListener("click", () => {
+  const value = els.backendUrl.value.trim();
+  if (!value) {
+    setStatus("Inserisci un URL valido.");
+    return;
+  }
+  setBackendUrl(value);
+  setStatus("URL backend salvato.");
 });
 
 els.loadDettato.addEventListener("click", () => {
@@ -434,14 +550,31 @@ els.play.addEventListener("click", () => {
     setStatus("Nessun testo da leggere.");
     return;
   }
-  if (engine !== "browser") {
-    setStatus("Motore non configurato. Uso il browser.");
+  if (engine === "browser") {
+    speakChunks(text, chunkSize, rate);
+    return;
   }
-  speakChunks(text, chunkSize, rate);
+  playCloudQueue(text, chunkSize, rate, Number(els.pauseLength.value), engine).catch(
+    (err) => {
+      setStatus("Errore TTS online.");
+      console.error(err);
+    }
+  );
 });
 
 els.pause.addEventListener("click", () => {
   if (!isReading) return;
+  if (cloudMode) {
+    if (isPaused) {
+      if (currentAudio) currentAudio.play();
+      isPaused = false;
+    } else {
+      if (currentAudio) currentAudio.pause();
+      isPaused = true;
+    }
+    return;
+  }
+
   if (isPaused) {
     if (window.speechSynthesis.paused) window.speechSynthesis.resume();
     if (pauseRemaining > 0) {
@@ -476,3 +609,5 @@ window.speechSynthesis.onvoiceschanged = loadVoices;
 loadDettati();
 renderProgress();
 renderHistory();
+
+els.backendUrl.value = getBackendUrl();

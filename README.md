@@ -12,3 +12,22 @@ Web app per dettati: OCR da immagini/PDF, lettura lenta e correzione con salvata
 ## Note
 - I progressi sono salvati nel browser del dispositivo (localStorage).
 - Per i PDF viene letta la prima pagina.
+
+## Backend TTS (OpenAI + Gemini)
+L'app statica su GitHub Pages chiama un backend online che genera l'audio.
+
+### Variabili d'ambiente
+Vedi `server/.env.example`.
+Per Gemini serve anche `GOOGLE_APPLICATION_CREDENTIALS` (file JSON del service account).
+
+### Avvio locale
+```bash
+cd /Users/nicolabarban/Library/CloudStorage/Dropbox/dettato_fun/server
+npm install
+cp .env.example .env
+npm start
+```
+
+### Deploy online (consigliato per tablet)
+Usa un provider tipo Render/Railway/Vercel e imposta le variabili d'ambiente.
+Poi inserisci l'URL del backend nel campo “URL backend TTS online” dell'app.

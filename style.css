@@ -129,6 +129,15 @@ body {
   background: #fff;
 }
 
+.status.small {
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.settings {
+  margin-top: 12px;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
