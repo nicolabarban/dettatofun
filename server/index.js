@@ -10,6 +10,21 @@ app.use(cors());
 app.use(express.json({ limit: "1mb" }));
 
 const PORT = process.env.PORT || 3000;
+const OPENAI_VOICES = new Set([
+  "alloy",
+  "ash",
+  "ballad",
+  "coral",
+  "echo",
+  "fable",
+  "nova",
+  "onyx",
+  "sage",
+  "shimmer",
+  "verse",
+  "marin",
+  "cedar",
+]);
 
 function clamp(value, min, max) {
   return Math.max(min, Math.min(max, value));
@@ -35,7 +50,11 @@ app.post("/tts/openai", async (req, res) => {
 
     const speed = clamp(Number(req.body?.speed || 1), 0.25, 4);
     const model = process.env.OPENAI_TTS_MODEL || "gpt-4o-mini-tts";
-    const voice = process.env.OPENAI_TTS_VOICE || "alloy";
+    const requestedVoice = String(req.body?.voice || "").trim();
+    const fallbackVoice = process.env.OPENAI_TTS_VOICE || "alloy";
+    const voice = OPENAI_VOICES.has(requestedVoice)
+      ? requestedVoice
+      : fallbackVoice;
 
     const response = await fetch("https://api.openai.com/v1/audio/speech", {
       method: "POST",

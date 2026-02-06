@@ -32,6 +32,7 @@ const els = {
 
 const STORE_KEY = "dettati-magici";
 const BACKEND_KEY = "dettati-tts-backend";
+const DEFAULT_BACKEND_URL = "https://dettatofun.onrender.com";
 let currentStudent = null;
 let isReading = false;
 let isPaused = false;
@@ -45,6 +46,22 @@ let selectedVoice = null;
 let currentAudio = null;
 let cloudMode = false;
 let cloudStop = false;
+
+const OPENAI_VOICES = [
+  "alloy",
+  "ash",
+  "ballad",
+  "coral",
+  "echo",
+  "fable",
+  "nova",
+  "onyx",
+  "sage",
+  "shimmer",
+  "verse",
+  "marin",
+  "cedar",
+];
 
 pdfjsLib.GlobalWorkerOptions.workerSrc =
   "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
@@ -363,6 +380,13 @@ function saveSelfCheck() {
 }
 
 function loadVoices() {
+  if (els.engine.value === "openai") {
+    els.voice.innerHTML = OPENAI_VOICES.map(
+      (v) => `<option value="${v}">${v}</option>`
+    ).join("");
+    selectedVoice = OPENAI_VOICES[0];
+    return;
+  }
   const voices = window.speechSynthesis.getVoices();
   const italian = voices.filter((v) => v.lang.toLowerCase().startsWith("it"));
   const list = italian.length ? italian : voices;
@@ -376,6 +400,10 @@ function loadVoices() {
 }
 
 function updateSelectedVoice() {
+  if (els.engine.value === "openai") {
+    selectedVoice = els.voice.value;
+    return;
+  }
   const voices = window.speechSynthesis.getVoices();
   const italian = voices.filter((v) => v.lang.toLowerCase().startsWith("it"));
   const list = italian.length ? italian : voices;
@@ -402,7 +430,7 @@ async function loadDettati() {
 }
 
 function getBackendUrl() {
-  return localStorage.getItem(BACKEND_KEY) || "";
+  return localStorage.getItem(BACKEND_KEY) || DEFAULT_BACKEND_URL;
 }
 
 function setBackendUrl(value) {
@@ -415,11 +443,11 @@ async function fetchTtsAudio(engine, text, speed) {
     setStatus("Inserisci l'URL del backend TTS.");
     throw new Error("Missing backend URL");
   }
-  const endpoint = engine === "openai" ? "/tts/openai" : "/tts/gemini";
+  const endpoint = "/tts/openai";
   const response = await fetch(`${baseUrl}${endpoint}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ text, speed }),
+    body: JSON.stringify({ text, speed, voice: selectedVoice }),
   });
   if (!response.ok) {
     const err = await response.text();
@@ -554,7 +582,7 @@ els.play.addEventListener("click", () => {
     speakChunks(text, chunkSize, rate);
     return;
   }
-  playCloudQueue(text, chunkSize, rate, Number(els.pauseLength.value), engine).catch(
+  playCloudQueue(text, chunkSize, rate, Number(els.pauseLength.value), "openai").catch(
     (err) => {
       setStatus("Errore TTS online.");
       console.error(err);
