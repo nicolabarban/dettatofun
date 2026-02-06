@@ -33,6 +33,7 @@ const els = {
 const STORE_KEY = "dettati-magici";
 const BACKEND_KEY = "dettati-tts-backend";
 const DEFAULT_BACKEND_URL = "https://dettatofun.onrender.com";
+const VOICE_KEY = "dettati-tts-voice";
 let currentStudent = null;
 let isReading = false;
 let isPaused = false;
@@ -384,7 +385,9 @@ function loadVoices() {
     els.voice.innerHTML = OPENAI_VOICES.map(
       (v) => `<option value="${v}">${v}</option>`
     ).join("");
-    selectedVoice = OPENAI_VOICES[0];
+    const saved = localStorage.getItem(VOICE_KEY);
+    selectedVoice = OPENAI_VOICES.includes(saved) ? saved : OPENAI_VOICES[0];
+    els.voice.value = selectedVoice;
     return;
   }
   const voices = window.speechSynthesis.getVoices();
@@ -396,18 +399,22 @@ function loadVoices() {
         `<option value="${idx}">${v.name} (${v.lang})</option>`
     )
     .join("");
-  selectedVoice = list[0] || null;
+  const savedIndex = Number(localStorage.getItem(VOICE_KEY));
+  selectedVoice = list[savedIndex] || list[0] || null;
+  els.voice.value = String(savedIndex >= 0 ? savedIndex : 0);
 }
 
 function updateSelectedVoice() {
   if (els.engine.value === "openai") {
     selectedVoice = els.voice.value;
+    localStorage.setItem(VOICE_KEY, selectedVoice);
     return;
   }
   const voices = window.speechSynthesis.getVoices();
   const italian = voices.filter((v) => v.lang.toLowerCase().startsWith("it"));
   const list = italian.length ? italian : voices;
   selectedVoice = list[Number(els.voice.value)] || null;
+  localStorage.setItem(VOICE_KEY, els.voice.value);
 }
 
 async function loadDettati() {
@@ -549,6 +556,10 @@ els.saveBackend.addEventListener("click", () => {
   }
   setBackendUrl(value);
   setStatus("URL backend salvato.");
+});
+
+els.engine.addEventListener("change", () => {
+  loadVoices();
 });
 
 els.loadDettato.addEventListener("click", () => {
