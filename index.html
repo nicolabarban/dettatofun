@@ -1,146 +1,17 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="it">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>I Dettati Magici di Alice</title>
-    <link rel="stylesheet" href="style.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-  </head>
-  <body>
-    <main class="app">
-      <header class="hero">
-        <div class="badge">I Dettati Magici di Alice</div>
-        <h1>Ascolta, riscrivi, migliora</h1>
-        <p>Carica una foto o un PDF. L'app legge lentamente e tu puoi correggere.</p>
-      </header>
-
-      <section class="panel">
-        <div class="row">
-          <label class="field">
-            <span>Nome bambino</span>
-            <input id="studentName" type="text" placeholder="Es. Luca" />
-          </label>
-          <button id="saveStudent" class="btn primary">Salva</button>
-        </div>
-        <div id="progressCard" class="progress"></div>
-      </section>
-
-      <section class="panel">
-        <div class="row">
-          <label class="field">
-            <span>Dettati disponibili</span>
-            <select id="dettatiSelect"></select>
-          </label>
-          <button id="loadDettato" class="btn">Carica dettato</button>
-        </div>
-        <div class="status">Usa un dettato pronto o fai OCR da immagine.</div>
-      </section>
-
-      <section class="panel">
-        <div class="row">
-          <label class="file-box" for="fileInput">
-            <input id="fileInput" type="file" accept="image/*,.pdf" />
-            <span>Carica immagine o PDF</span>
-          </label>
-          <button id="runOcr" class="btn">Fai OCR</button>
-        </div>
-        <div id="ocrStatus" class="status">Pronto.</div>
-      </section>
-
-      <section class="panel">
-        <div class="grid">
-          <div>
-            <div class="row">
-              <h2>Testo letto</h2>
-              <button id="toggleText" class="btn small">Mostra testo</button>
-            </div>
-            <div id="ocrBox" class="hidden">
-              <textarea id="ocrText" placeholder="Il testo apparira qui"></textarea>
-            </div>
-          </div>
-          <div>
-            <h2>Testo bambino</h2>
-            <textarea id="childText" placeholder="Scrivi qui il dettato"></textarea>
-          </div>
-        </div>
-        <div class="controls">
-          <div class="slider">
-            <label for="rate">Velocita lettura</label>
-            <input id="rate" type="range" min="0.6" max="1.2" step="0.1" value="0.8" />
-          </div>
-          <div class="slider">
-            <label for="pauseLength">Pausa dopo / (ms)</label>
-            <input id="pauseLength" type="range" min="400" max="1600" step="100" value="900" />
-          </div>
-          <div class="slider">
-            <label for="chunk">Parole per passo</label>
-            <input id="chunk" type="range" min="3" max="12" step="1" value="6" />
-          </div>
-          <div class="slider">
-            <label for="engine">Motore voce</label>
-            <select id="engine">
-              <option value="browser">Browser (consigliato)</option>
-              <option value="openai">OpenAI</option>
-            </select>
-          </div>
-          <div class="slider">
-            <label for="voice">Voce</label>
-            <select id="voice"></select>
-          </div>
-          <button id="play" class="btn primary">Leggi</button>
-          <button id="pause" class="btn">Pausa</button>
-          <button id="stop" class="btn">Stop</button>
-          <button id="compare" class="btn">Confronta</button>
-          <button id="saveAttempt" class="btn success">Salva correzione</button>
-        </div>
-        <div class="row settings">
-          <label class="field">
-            <span>URL backend TTS online</span>
-            <input id="backendUrl" type="text" placeholder="Es. https://tuo-backend" />
-          </label>
-          <button id="saveBackend" class="btn">Salva URL</button>
-        </div>
-        <div id="compareResult" class="status small hidden"></div>
-      </section>
-
-      <section class="panel">
-        <h2>Scrittura a mano (foto)</h2>
-        <div class="row">
-          <label class="file-box" for="handwritingInput">
-            <input id="handwritingInput" type="file" accept="image/*" />
-            <span>Carica foto del quaderno</span>
-          </label>
-          <button id="runHtr" class="btn">Trascrivi in testo bambino</button>
-        </div>
-        <div class="status small">La trascrizione usa OpenAI Vision nel backend.</div>
-      </section>
-
-      <section class="panel">
-        <h2>Autocorrezione</h2>
-        <div class="row">
-          <label class="field">
-            <span>Numero di errori trovati</span>
-            <input id="errorCount" type="number" min="0" placeholder="0" />
-          </label>
-          <label class="field">
-            <span>Note del bambino</span>
-            <input id="selfNote" type="text" placeholder="Es. Ho sbagliato gli accenti" />
-          </label>
-          <button id="saveSelf" class="btn success">Salva autocorrezione</button>
-        </div>
-      </section>
-
-      <section class="panel">
-        <h2>Storico</h2>
-        <div id="history" class="history"></div>
-      </section>
-    </main>
-
-    <script src="app.js"></script>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fce7f3">
+  <title>Caccia all'Errore</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main id="app" aria-live="polite"></main>
+  <script type="module" src="app.js"></script>
+</body>
 </html>

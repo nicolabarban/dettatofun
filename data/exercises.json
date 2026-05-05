@@ -1,0 +1,420 @@
+{
+  "version": 2,
+  "targetAge": 10,
+  "levels": [
+    {
+      "id": 1,
+      "name": "Doppie",
+      "description": "Trova la parola con la doppia sbagliata o mancante."
+    },
+    {
+      "id": 2,
+      "name": "H del verbo avere",
+      "description": "Distingui 'a/ha', 'o/ho', 'anno/hanno'."
+    },
+    {
+      "id": 3,
+      "name": "Suoni difficili",
+      "description": "sc/sci, gn/gl, cqu — due errori per frase."
+    },
+    {
+      "id": 4,
+      "name": "Mix finale",
+      "description": "Tre errori per frase, di tutti i tipi mescolati."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "L1-01",
+      "level": 1,
+      "category": "doppie",
+      "paragraph": ["Ieri", "al", "parco", "ho", "visto", "un", "cane", "enorme", "correre", "dietro", "a", "una", "pala", "rossa.", "Il", "suo", "padrone", "lo", "chiamava", "ma", "lui", "non", "voleva", "ascoltare.", "Alla", "fine", "si", "è", "fermato", "vicino", "a", "una", "panchina", "di", "legno."],
+      "errors": [
+        { "wordIndex": 12, "correct": "palla", "options": ["palla", "pala", "pallla"] }
+      ]
+    },
+    {
+      "id": "L1-02",
+      "level": 1,
+      "category": "doppie",
+      "paragraph": ["Mio", "nonno", "coltiva", "pomodori", "nel", "suo", "orto", "da", "tantissimi", "anni.", "Ogni", "estate", "raccoglie", "cassette", "piene", "di", "verdure", "fresche.", "La", "mamma", "con", "quei", "pomodori", "prepara", "una", "salsa", "buonisima", "per", "la", "pasta", "della", "domenica."],
+      "errors": [
+        { "wordIndex": 26, "correct": "buonissima", "options": ["buonissima", "buonisima", "bonissima"] }
+      ]
+    },
+    {
+      "id": "L1-03",
+      "level": 1,
+      "category": "doppie",
+      "paragraph": ["Marco", "e", "Giulia", "stavano", "costruendo", "una", "capanna", "nel", "bosco", "con", "dei", "rami", "secchi.", "Avevano", "lavorato", "tutto", "il", "pomeriggio", "sotto", "il", "sole", "forte.", "Sentirono", "un", "rumore", "strano", "tra", "le", "foglie.", "Era", "solo", "un", "picolo", "riccio", "che", "cercava", "qualcosa", "da", "mangiare."],
+      "errors": [
+        { "wordIndex": 32, "correct": "piccolo", "options": ["piccolo", "picolo", "picollo"] }
+      ]
+    },
+    {
+      "id": "L1-04",
+      "level": 1,
+      "category": "doppie",
+      "paragraph": ["La", "maestra", "ha", "portato", "in", "classe", "un", "grande", "mappamondo", "per", "la", "lezione", "di", "geografia.", "Ha", "mostrato", "a", "tutti", "i", "continenti", "e", "gli", "oceani", "principali.", "Poi", "ci", "ha", "chiesto", "di", "indicare", "l'Italia", "con", "il", "dito.", "Tutti", "hanno", "alzzato", "la", "mano", "per", "rispondere", "alla", "domanda."],
+      "errors": [
+        { "wordIndex": 36, "correct": "alzato", "options": ["alzato", "alzzato", "alsato"] }
+      ]
+    },
+    {
+      "id": "L1-05",
+      "level": 1,
+      "category": "doppie",
+      "paragraph": ["In", "estate", "la", "mia", "famiglia", "parte", "sempre", "per", "il", "mare", "in", "Liguria.", "Ogni", "anno", "torniamo", "nella", "stessa", "pensione", "vicino", "al", "porto.", "Quest'anno", "ho", "fato", "amicizia", "con", "un", "ragazzo", "del", "posto.", "Insieme", "abbiamo", "costruito", "un", "castello", "di", "sabbia", "gigantesco."],
+      "errors": [
+        { "wordIndex": 23, "correct": "fatto", "options": ["fatto", "fato", "fattto"] }
+      ]
+    },
+    {
+      "id": "L1-06",
+      "level": 1,
+      "category": "doppie",
+      "paragraph": ["Mio", "papà", "sta", "imparando", "a", "fare", "il", "falegname", "nel", "tempo", "libero.", "Costruisce", "piccoli", "mobili", "nel", "garage", "di", "casa", "con", "il", "legno", "avanzato.", "Una", "volta", "si", "è", "fatto", "anche", "due", "piccole", "feritte", "alle", "dita.", "Per", "fortuna", "non", "era", "niente", "di", "grave", "e", "ha", "continuato", "lo", "stesso."],
+      "errors": [
+        { "wordIndex": 30, "correct": "ferite", "options": ["ferite", "feritte", "ferritte"] }
+      ]
+    },
+    {
+      "id": "L1-07",
+      "level": 1,
+      "category": "doppie",
+      "paragraph": ["La", "mia", "compagna", "di", "banco", "è", "bravissima", "in", "matematica.", "Mi", "aiuta", "sempre", "con", "i", "problemi", "più", "difficili", "durante", "l'intervallo.", "Insieme", "abbiamo", "studiato", "per", "il", "test", "e", "abbiamo", "preso", "tuto", "giusto.", "La", "maestra", "ci", "ha", "fatto", "i", "complimenti", "davanti", "a", "tutta", "la", "classe."],
+      "errors": [
+        { "wordIndex": 28, "correct": "tutto", "options": ["tutto", "tuto", "tuttto"] }
+      ]
+    },
+    {
+      "id": "L1-08",
+      "level": 1,
+      "category": "doppie",
+      "paragraph": ["Stamattina", "la", "mama", "mi", "ha", "svegliato", "presto", "per", "andare", "a", "fare", "la", "spesa.", "Al", "supermercato", "abbiamo", "riempito", "il", "carrello", "di", "frutta", "e", "verdura", "fresca.", "Mi", "ha", "lasciato", "scegliere", "il", "gusto", "del", "gelato", "per", "dopo", "cena.", "Ho", "preso", "pistacchio", "e", "cioccolato", "come", "al", "solito."],
+      "errors": [
+        { "wordIndex": 2, "correct": "mamma", "options": ["mamma", "mama", "mammma"] }
+      ]
+    },
+    {
+      "id": "L1-09",
+      "level": 1,
+      "category": "doppie",
+      "paragraph": ["Ieri", "sera", "mi", "sono", "addormentato", "presto", "perché", "ero", "molto", "stanco.", "Avevo", "giocato", "a", "calcio", "tutto", "il", "pomeriggio", "con", "i", "miei", "amici.", "Sono", "andato", "a", "leto", "subito", "dopo", "cena", "senza", "neanche", "guardare", "la", "TV.", "Stamattina", "mi", "sono", "svegliato", "pieno", "di", "energie", "per", "la", "nuova", "giornata."],
+      "errors": [
+        { "wordIndex": 24, "correct": "letto", "options": ["letto", "leto", "lleto"] }
+      ]
+    },
+    {
+      "id": "L1-10",
+      "level": 1,
+      "category": "doppie",
+      "paragraph": ["Stamattina", "al", "cinema", "abbiamo", "visto", "un", "film", "di", "avventura", "davvero", "bello.", "Apena", "entrati", "in", "sala", "il", "proiettore", "si", "è", "acceso", "da", "solo.", "Lo", "schermo", "era", "enorme", "e", "il", "suono", "fortissimo", "come", "al", "solito.", "Quando", "il", "film", "è", "finito", "tutti", "hanno", "applaudito", "felicissimi."],
+      "errors": [
+        { "wordIndex": 11, "correct": "Appena", "options": ["Appena", "Apena", "Aphena"] }
+      ]
+    },
+    {
+      "id": "L2-01",
+      "level": 2,
+      "category": "h_verbo_avere",
+      "paragraph": ["Stamattina", "o", "trovato", "un", "libro", "molto", "interessante", "nello", "zaino", "di", "mio", "fratello.", "Era", "pieno", "di", "disegni", "colorati", "e", "racconti", "di", "animali", "strani.", "Gli", "ho", "chiesto", "se", "potevo", "leggerlo", "per", "qualche", "giorno.", "Lui", "mi", "ha", "risposto", "di", "sì", "ma", "di", "stare", "attento", "alle", "pagine."],
+      "errors": [
+        { "wordIndex": 1, "correct": "ho", "options": ["ho", "o", "hò"] }
+      ]
+    },
+    {
+      "id": "L2-02",
+      "level": 2,
+      "category": "h_verbo_avere",
+      "paragraph": ["L'anno", "scorso", "a", "scuola", "anno", "organizzato", "una", "gita", "molto", "bella.", "Siamo", "andati", "a", "visitare", "un", "castello", "medievale", "sulle", "colline.", "La", "guida", "ci", "ha", "raccontato", "storie", "di", "cavalieri", "e", "principesse.", "Alla", "fine", "abbiamo", "fatto", "un", "picnic", "nel", "grande", "prato", "vicino", "alle", "mura."],
+      "errors": [
+        { "wordIndex": 4, "correct": "hanno", "options": ["hanno", "anno", "han"] }
+      ]
+    },
+    {
+      "id": "L2-03",
+      "level": 2,
+      "category": "h_verbo_avere",
+      "paragraph": ["Il", "mio", "cane", "Rocco", "ha", "una", "personalità", "davvero", "buffa.", "Ogni", "mattina", "mi", "aspetta", "sulla", "porta", "della", "cucina", "per", "fare", "colazione.", "Quando", "torno", "da", "scuola", "si", "mette", "a", "saltare", "come", "se", "non", "mi", "vedesse", "da", "un", "hanno", "intero.", "La", "sera", "invece", "si", "addormenta", "sulle", "mie", "ginocchia", "mentre", "faccio", "i", "compiti."],
+      "errors": [
+        { "wordIndex": 35, "correct": "anno", "options": ["anno", "hanno", "ano"] }
+      ]
+    },
+    {
+      "id": "L2-04",
+      "level": 2,
+      "category": "h_verbo_avere",
+      "paragraph": ["Sabato", "scorso", "o", "partecipato", "a", "una", "gara", "di", "nuoto", "in", "piscina.", "Eravamo", "in", "venti", "bambini", "divisi", "in", "cinque", "squadre", "diverse.", "Io", "o", "vinto", "la", "medaglia", "d'argento", "e", "mio", "cugino", "quella", "di", "bronzo.", "I", "nostri", "genitori", "erano", "felicissimi", "e", "ci", "hanno", "portato", "fuori", "a", "cena."],
+      "errors": [
+        { "wordIndex": 2, "correct": "ho", "options": ["ho", "o", "hò"] },
+        { "wordIndex": 21, "correct": "ho", "options": ["ho", "o", "hò"] }
+      ]
+    },
+    {
+      "id": "L2-05",
+      "level": 2,
+      "category": "h_verbo_avere",
+      "paragraph": ["Mio", "fratello", "a", "comprato", "una", "bicicletta", "nuova", "con", "i", "soldi", "del", "compleanno.", "È", "rossa", "fuoco", "con", "il", "manubrio", "nero", "e", "i", "campanelli", "argentati.", "Ogni", "pomeriggio", "la", "usa", "per", "andare", "al", "parco", "con", "gli", "amici.", "Io", "invece", "sto", "risparmiando", "per", "averne", "una", "uguale", "anche", "io."],
+      "errors": [
+        { "wordIndex": 2, "correct": "ha", "options": ["ha", "a", "à"] }
+      ]
+    },
+    {
+      "id": "L2-06",
+      "level": 2,
+      "category": "h_verbo_avere",
+      "paragraph": ["Domani", "potremmo", "andare", "al", "lago", "oppure", "restare", "a", "casa", "a", "giocare.", "Decidi", "tu", "cosa", "preferisci", "fare", "nel", "pomeriggio.", "Io", "ho", "già", "preparato", "lo", "zaino", "con", "la", "merenda", "e", "l'acqua.", "La", "mamma", "ho", "il", "papà", "ci", "accompagneranno", "con", "la", "macchina."],
+      "errors": [
+        { "wordIndex": 31, "correct": "o", "options": ["o", "ho", "hò"] }
+      ]
+    },
+    {
+      "id": "L2-07",
+      "level": 2,
+      "category": "h_verbo_avere",
+      "paragraph": ["I", "miei", "zii", "anno", "comprato", "una", "casa", "al", "mare", "l'estate", "scorsa.", "Ci", "stiamo", "preparando", "per", "andare", "a", "trovarli", "durante", "le", "vacanze.", "La", "cugina", "più", "piccola", "non", "vede", "l'ora", "di", "portarci", "in", "spiaggia.", "Sicuramente", "passeremo", "giornate", "bellissime", "tutti", "insieme."],
+      "errors": [
+        { "wordIndex": 3, "correct": "hanno", "options": ["hanno", "anno", "han"] }
+      ]
+    },
+    {
+      "id": "L2-08",
+      "level": 2,
+      "category": "h_verbo_avere",
+      "paragraph": ["Stamattina", "o", "trovato", "un", "libro", "nel", "parco", "mentre", "giocavo", "con", "gli", "amici.", "Era", "un", "manuale", "di", "magia", "con", "le", "copertine", "dorate", "e", "le", "pagine", "ingiallite.", "La", "maestra", "a", "detto", "che", "lo", "terremo", "nella", "biblioteca", "della", "classe.", "Tutti", "i", "bambini", "potranno", "leggerlo", "durante", "l'intervallo", "del", "pomeriggio."],
+      "errors": [
+        { "wordIndex": 1, "correct": "ho", "options": ["ho", "o", "hò"] },
+        { "wordIndex": 27, "correct": "ha", "options": ["ha", "a", "à"] }
+      ]
+    },
+    {
+      "id": "L2-09",
+      "level": 2,
+      "category": "h_verbo_avere",
+      "paragraph": ["Di", "solito", "a", "Natale", "i", "nonni", "anno", "preparato", "per", "noi", "tantissimi", "regali.", "Quest'anno", "però", "abbiamo", "deciso", "di", "fare", "un", "dono", "solo.", "La", "nonna", "ci", "ha", "insegnato", "a", "fare", "i", "biscotti", "tradizionali", "della", "famiglia.", "Li", "abbiamo", "confezionati", "in", "scatole", "colorate", "per", "amici", "e", "parenti."],
+      "errors": [
+        { "wordIndex": 6, "correct": "hanno", "options": ["hanno", "anno", "han"] }
+      ]
+    },
+    {
+      "id": "L2-10",
+      "level": 2,
+      "category": "h_verbo_avere",
+      "paragraph": ["Quest'estate", "o", "conosciuto", "un", "bambino", "tedesco", "in", "campeggio.", "Veniva", "da", "una", "città", "vicino", "a", "Berlino", "e", "parlava", "un", "po'", "di", "italiano.", "Insieme", "abbiamo", "giocato", "a", "pallone", "tutti", "i", "pomeriggi", "sulla", "spiaggia.", "Alla", "fine", "delle", "vacanze", "ci", "siamo", "scambiati", "gli", "indirizzi", "di", "casa."],
+      "errors": [
+        { "wordIndex": 1, "correct": "ho", "options": ["ho", "o", "hò"] }
+      ]
+    },
+    {
+      "id": "L3-01",
+      "level": 3,
+      "category": "suoni_difficili",
+      "paragraph": ["Per", "il", "compleanno", "di", "mio", "cugino", "abbiamo", "preparato", "una", "torta", "deliziosa", "con", "la", "ciliegia", "sopra.", "La", "ricetta", "diceva", "di", "usare", "lo", "zucchero", "a", "velo", "e", "l'aquua", "tiepida", "per", "l'impasto.", "Quando", "l'aqua", "è", "troppo", "calda", "però", "l'impasto", "non", "viene", "bene.", "Alla", "fine", "la", "torta", "è", "venuta", "perfetta", "e", "tutti", "hanno", "fatto", "il", "bis."],
+      "errors": [
+        { "wordIndex": 25, "correct": "l'acqua", "options": ["l'acqua", "l'aquua", "l'aqua"] },
+        { "wordIndex": 30, "correct": "l'acqua", "options": ["l'acqua", "l'aqua", "l'aquua"] }
+      ]
+    },
+    {
+      "id": "L3-02",
+      "level": 3,
+      "category": "suoni_difficili",
+      "paragraph": ["Lo", "siatore", "è", "scivolato", "sulla", "pista", "nera", "mentre", "faceva", "una", "curva", "veloce.", "Per", "fortuna", "non", "si", "è", "fatto", "male", "e", "si", "è", "subito", "rialzato.", "I", "suoi", "amici", "lo", "aspettavano", "in", "fondo", "alla", "disesa", "preoccupati.", "Alla", "fine", "ha", "riso", "anche", "lui", "dell'incidente", "e", "hanno", "proseguito", "la", "giornata."],
+      "errors": [
+        { "wordIndex": 1, "correct": "sciatore", "options": ["sciatore", "siatore", "schiatore"] },
+        { "wordIndex": 32, "correct": "discesa", "options": ["discesa", "disesa", "dischesa"] }
+      ]
+    },
+    {
+      "id": "L3-03",
+      "level": 3,
+      "category": "suoni_difficili",
+      "paragraph": ["La", "familia", "di", "Sara", "ha", "un", "cane", "bellissimo", "che", "si", "chiama", "Pepper.", "Hanno", "anche", "due", "gatti", "che", "dormono", "tutto", "il", "giorno", "sul", "divano.", "Ogni", "mattina", "Sara", "porta", "il", "cane", "al", "parco", "con", "i", "suoi", "compani", "di", "scuola.", "È", "una", "grande", "responsabilità", "ma", "a", "lei", "piace", "tantissimo."],
+      "errors": [
+        { "wordIndex": 1, "correct": "famiglia", "options": ["famiglia", "familia", "famillia"] },
+        { "wordIndex": 34, "correct": "compagni", "options": ["compagni", "compani", "companii"] }
+      ]
+    },
+    {
+      "id": "L3-04",
+      "level": 3,
+      "category": "suoni_difficili",
+      "paragraph": ["L'insiegnante", "di", "scenze", "ci", "ha", "portato", "in", "laboratorio", "per", "un", "esperimento", "divertente.", "Abbiamo", "mescolato", "acqua,", "sale", "e", "zucchero", "in", "tre", "bicchieri", "diversi.", "Poi", "abbiamo", "annotato", "sul", "quaderno", "tutto", "quello", "che", "succedeva.", "Era", "come", "essere", "dei", "piccoli", "scienziati", "con", "il", "camice", "bianco."],
+      "errors": [
+        { "wordIndex": 0, "correct": "L'insegnante", "options": ["L'insegnante", "L'insiegnante", "L'inseniante"] },
+        { "wordIndex": 2, "correct": "scienze", "options": ["scienze", "scenze", "sciencie"] }
+      ]
+    },
+    {
+      "id": "L3-05",
+      "level": 3,
+      "category": "suoni_difficili",
+      "paragraph": ["A", "scuola", "la", "mia", "materia", "preferita", "è", "la", "scenza", "degli", "animali", "e", "delle", "piante.", "Studiamo", "come", "crescono", "i", "fiori", "e", "perché", "gli", "uccelli", "migrano.", "La", "maestra", "ci", "insiegna", "a", "osservare", "il", "giardino", "con", "attenzione.", "Ognuno", "ha", "un", "quaderno", "speciale", "per", "disegnare", "quello", "che", "vede."],
+      "errors": [
+        { "wordIndex": 8, "correct": "scienza", "options": ["scienza", "scenza", "sciensa"] },
+        { "wordIndex": 27, "correct": "insegna", "options": ["insegna", "insiegna", "insienia"] }
+      ]
+    },
+    {
+      "id": "L3-06",
+      "level": 3,
+      "category": "suoni_difficili",
+      "paragraph": ["Per", "il", "compito", "di", "disegno", "la", "maestra", "ci", "ha", "distribuito", "un", "folio", "bianco", "a", "testa.", "Dovevamo", "disegnare", "il", "nostro", "animale", "preferito", "con", "i", "colori", "a", "matita.", "Io", "ho", "fatto", "un", "cane", "labrador", "giallo", "che", "assomilia", "a", "quello", "dei", "vicini.", "La", "maestra", "l'ha", "attaccato", "in", "classe", "insieme", "agli", "altri", "disegni."],
+      "errors": [
+        { "wordIndex": 11, "correct": "foglio", "options": ["foglio", "folio", "follio"] },
+        { "wordIndex": 34, "correct": "assomiglia", "options": ["assomiglia", "assomilia", "assomillia"] }
+      ]
+    },
+    {
+      "id": "L3-07",
+      "level": 3,
+      "category": "suoni_difficili",
+      "paragraph": ["Quando", "vedo", "le", "pizze", "nel", "forno", "mi", "viene", "subito", "l'aquolina", "in", "bocca.", "Mia", "nonna", "ne", "fa", "una", "versione", "speciale", "con", "la", "mozzarella", "di", "bufala.", "Mi", "insiegna", "a", "fare", "l'impasto", "a", "mano", "e", "a", "stenderlo", "bene.", "Tutti", "i", "miei", "amici", "la", "chiedono", "quando", "vengono", "a", "trovarmi."],
+      "errors": [
+        { "wordIndex": 9, "correct": "l'acquolina", "options": ["l'acquolina", "l'aquolina", "l'aquuolina"] },
+        { "wordIndex": 25, "correct": "insegna", "options": ["insegna", "insiegna", "insienia"] }
+      ]
+    },
+    {
+      "id": "L3-08",
+      "level": 3,
+      "category": "suoni_difficili",
+      "paragraph": ["Sotto", "al", "sole", "d'estate", "il", "gelato", "si", "soglie", "in", "pochi", "minuti.", "Mio", "fratello", "l'altro", "giorno", "ha", "provato", "a", "tenere", "in", "mano", "un", "cono", "troppo", "a", "lungo.", "Alla", "fine", "il", "gelato", "è", "caduto", "per", "terra", "in", "un", "grande", "pasticcio", "rosa", "che", "faceva", "ridere.", "Per", "fortuna", "la", "sua", "compana", "ha", "riso", "e", "gliene", "ha", "comprato", "un", "altro", "al", "cioccolato."],
+      "errors": [
+        { "wordIndex": 7, "correct": "scioglie", "options": ["scioglie", "soglie", "schioglie"] },
+        { "wordIndex": 46, "correct": "compagna", "options": ["compagna", "compana", "compania"] }
+      ]
+    },
+    {
+      "id": "L3-09",
+      "level": 3,
+      "category": "suoni_difficili",
+      "paragraph": ["L'insiegnante", "di", "geografia", "ha", "portato", "in", "classe", "un", "nuovo", "compano", "americano.", "Si", "chiama", "Mike", "e", "parla", "un", "po'", "di", "italiano", "grazie", "alla", "mamma", "siciliana.", "Ha", "già", "fatto", "amicizia", "con", "tutti", "durante", "l'ora", "di", "ricreazione.", "Domani", "gli", "faremo", "conoscere", "il", "nostro", "gioco", "preferito", "al", "parchetto."],
+      "errors": [
+        { "wordIndex": 0, "correct": "L'insegnante", "options": ["L'insegnante", "L'insiegnante", "L'inseniante"] },
+        { "wordIndex": 9, "correct": "compagno", "options": ["compagno", "compano", "companiao"] }
+      ]
+    },
+    {
+      "id": "L3-10",
+      "level": 3,
+      "category": "suoni_difficili",
+      "paragraph": ["Per", "la", "lezione", "di", "scenze", "la", "maestra", "ci", "ha", "portato", "in", "laboratorio.", "Abbiamo", "riempito", "tre", "bicchieri", "con", "dell'aqua", "del", "rubinetto.", "In", "ognuno", "abbiamo", "aggiunto", "qualcosa:", "zucchero,", "sale", "o", "farina.", "Era", "come", "essere", "veri", "scienziati", "con", "il", "camice", "bianco", "e", "i", "guanti."],
+      "errors": [
+        { "wordIndex": 4, "correct": "scienze", "options": ["scienze", "scenze", "sciencie"] },
+        { "wordIndex": 17, "correct": "dell'acqua", "options": ["dell'acqua", "dell'aqua", "dell'aquua"] }
+      ]
+    },
+    {
+      "id": "L4-01",
+      "level": 4,
+      "category": "mix",
+      "paragraph": ["Mia", "zia", "possiede", "una", "boutique", "elegante", "in", "centro", "città.", "Vende", "camice", "di", "seta", "colorate", "e", "foulard", "decorati", "a", "mano.", "La", "domenica", "mattina", "chiude", "il", "negozio", "e", "va", "a", "fare", "una", "passegiata", "in", "collina.", "Il", "pomeriggio", "invece", "riceve", "gli", "amici", "per", "un", "caffè", "con", "dei", "biscoti", "fatti", "in", "casa."],
+      "errors": [
+        { "wordIndex": 10, "correct": "camicie", "options": ["camicie", "camice", "camiccie"] },
+        { "wordIndex": 30, "correct": "passeggiata", "options": ["passeggiata", "passegiata", "paseggiata"] },
+        { "wordIndex": 44, "correct": "biscotti", "options": ["biscotti", "biscoti", "bisscotti"] }
+      ]
+    },
+    {
+      "id": "L4-02",
+      "level": 4,
+      "category": "mix",
+      "paragraph": ["L'estate", "scorsa", "la", "mia", "famiglia", "è", "andata", "in", "vacanza", "in", "montagna.", "Abbiamo", "dormito", "in", "un", "rifugio", "antico", "con", "il", "tetto", "di", "legno.", "Ogni", "mattina", "facevamo", "lunge", "passegiate", "nei", "sentieri", "tra", "gli", "alberi.", "La", "sera", "giocavamo", "a", "carte", "vicino", "al", "camino", "aceso", "che", "scaldava", "la", "stanza."],
+      "errors": [
+        { "wordIndex": 25, "correct": "lunghe", "options": ["lunghe", "lunge", "lungie"] },
+        { "wordIndex": 26, "correct": "passeggiate", "options": ["passeggiate", "passegiate", "passegiatte"] },
+        { "wordIndex": 40, "correct": "acceso", "options": ["acceso", "aceso", "accceso"] }
+      ]
+    },
+    {
+      "id": "L4-03",
+      "level": 4,
+      "category": "mix",
+      "paragraph": ["La", "biblioteca", "della", "scuola", "è", "diventata", "il", "mio", "posto", "preferito.", "Ci", "sono", "scaffali", "pieni", "di", "libbri", "di", "ogni", "genere", "e", "per", "tutte", "le", "età.", "Quando", "finisco", "i", "compiti", "vado", "lì", "a", "leggere", "romanzi", "di", "avventura", "e", "fantasia.", "La", "bibliotecaria", "mi", "conosce", "bene", "e", "mi", "consilia", "sempre", "nuovi", "titoli", "interesanti", "da", "provare."],
+      "errors": [
+        { "wordIndex": 15, "correct": "libri", "options": ["libri", "libbri", "lipri"] },
+        { "wordIndex": 44, "correct": "consiglia", "options": ["consiglia", "consilia", "consilglia"] },
+        { "wordIndex": 48, "correct": "interessanti", "options": ["interessanti", "interesanti", "interressanti"] }
+      ]
+    },
+    {
+      "id": "L4-04",
+      "level": 4,
+      "category": "mix",
+      "paragraph": ["Domenica", "scorsa", "abbiamo", "organizatto", "una", "festa", "a", "sorpresa", "per", "il", "compleanno", "della", "nonna.", "Ognuno", "di", "noi", "a", "portato", "qualcosa:", "chi", "una", "torta,", "chi", "i", "palloncini,", "chi", "i", "fiori.", "La", "nonna", "è", "entrata", "e", "ha", "visto", "tutta", "la", "familia", "che", "gridava", "insieme.", "Ha", "pianto", "un", "poco", "dalla", "felicità", "e", "poi", "ha", "tagliato", "la", "torta."],
+      "errors": [
+        { "wordIndex": 3, "correct": "organizzato", "options": ["organizzato", "organizatto", "orghanizzato"] },
+        { "wordIndex": 16, "correct": "ha", "options": ["ha", "a", "à"] },
+        { "wordIndex": 37, "correct": "famiglia", "options": ["famiglia", "familia", "famigllia"] }
+      ]
+    },
+    {
+      "id": "L4-05",
+      "level": 4,
+      "category": "mix",
+      "paragraph": ["Mia", "cugina", "Sofia", "ha", "un", "fratelino", "di", "tre", "anni", "che", "adora", "i", "giocattoli", "colorati.", "Ogni", "volta", "che", "andiamo", "a", "trovarli", "la", "familia", "organizza", "una", "piccola", "festa.", "La", "zia", "prepara", "sempre", "dei", "cibi", "buonisimi", "tra", "cui", "la", "sua", "famosa", "torta.", "Quest'estate", "è", "venuto", "anche", "lui", "in", "vacanza", "con", "noi", "al", "mare."],
+      "errors": [
+        { "wordIndex": 5, "correct": "fratellino", "options": ["fratellino", "fratelino", "fratellinno"] },
+        { "wordIndex": 21, "correct": "famiglia", "options": ["famiglia", "familia", "famigllia"] },
+        { "wordIndex": 32, "correct": "buonissimi", "options": ["buonissimi", "buonisimi", "bonissimi"] }
+      ]
+    },
+    {
+      "id": "L4-06",
+      "level": 4,
+      "category": "mix",
+      "paragraph": ["Il", "sabato", "sera", "mio", "papà", "acende", "sempre", "il", "camino", "in", "cucina.", "Si", "siede", "vicino", "al", "fuoco", "con", "il", "suo", "libro", "e", "una", "tazza", "di", "tè", "caldo.", "Mia", "mamma", "intanto", "prepara", "la", "cena", "per", "tutta", "la", "familia", "con", "grande", "cura.", "Io", "aiuto", "a", "apparecchiare", "la", "tavola", "con", "i", "piatti", "più", "beli", "che", "abbiamo."],
+      "errors": [
+        { "wordIndex": 5, "correct": "accende", "options": ["accende", "acende", "acciende"] },
+        { "wordIndex": 35, "correct": "famiglia", "options": ["famiglia", "familia", "famigllia"] },
+        { "wordIndex": 49, "correct": "belli", "options": ["belli", "beli", "bellli"] }
+      ]
+    },
+    {
+      "id": "L4-07",
+      "level": 4,
+      "category": "mix",
+      "paragraph": ["Domenica", "scorsa", "siamo", "andati", "al", "museo", "della", "scenza", "con", "la", "classe.", "Eravamo", "molto", "eccitati", "perché", "non", "c'erano", "mai", "stati", "prima.", "Le", "maestre", "ci", "anno", "spiegato", "tantissime", "cose", "sui", "dinosauri.", "Alla", "fine", "abbiamo", "comprato", "un", "picolo", "souvenir", "nel", "negozio", "del", "museo."],
+      "errors": [
+        { "wordIndex": 7, "correct": "scienza", "options": ["scienza", "scenza", "sciensa"] },
+        { "wordIndex": 23, "correct": "hanno", "options": ["hanno", "anno", "han"] },
+        { "wordIndex": 34, "correct": "piccolo", "options": ["piccolo", "picolo", "picollo"] }
+      ]
+    },
+    {
+      "id": "L4-08",
+      "level": 4,
+      "category": "mix",
+      "paragraph": ["Mia", "mamma", "collezziona", "valige", "di", "pelle", "vintage", "da", "tantisimi", "anni.", "Le", "tiene", "tutte", "ordinate", "nello", "sgabuzzino", "vicino", "all'ingresso", "di", "casa.", "Ogni", "tanto", "le", "tira", "fuori", "per", "pulirle", "e", "ammirarle", "insieme", "a", "me.", "Sono", "così", "belle", "che", "sembrano", "oggetti", "di", "un", "piccolo", "museo", "privato."],
+      "errors": [
+        { "wordIndex": 2, "correct": "colleziona", "options": ["colleziona", "collezziona", "colezziona"] },
+        { "wordIndex": 3, "correct": "valigie", "options": ["valigie", "valige", "valiggie"] },
+        { "wordIndex": 8, "correct": "tantissimi", "options": ["tantissimi", "tantisimi", "tantisssimi"] }
+      ]
+    },
+    {
+      "id": "L4-09",
+      "level": 4,
+      "category": "mix",
+      "paragraph": ["Stamattina", "o", "trovato", "uno", "zaino", "abbandonato", "vicino", "alla", "fermata", "dell'autobus.", "Dentro", "c'era", "un", "quaderno", "con", "disenni", "di", "pirati", "e", "tesori", "nascosti.", "Tutta", "la", "mia", "familia", "ha", "cercato", "di", "capire", "a", "chi", "appartenesse.", "Alla", "fine", "lo", "abbiamo", "portato", "dal", "vigile", "perché", "trovasse", "il", "proprietario."],
+      "errors": [
+        { "wordIndex": 1, "correct": "ho", "options": ["ho", "o", "hò"] },
+        { "wordIndex": 15, "correct": "disegni", "options": ["disegni", "disenni", "disengi"] },
+        { "wordIndex": 24, "correct": "famiglia", "options": ["famiglia", "familia", "famigllia"] }
+      ]
+    },
+    {
+      "id": "L4-10",
+      "level": 4,
+      "category": "mix",
+      "paragraph": ["Quando", "l'estate", "è", "finita", "anche", "le", "mie", "amiche", "sono", "tornate", "a", "scuola.", "Ognuna", "ci", "ha", "raccontato", "i", "posti", "più", "beli", "visitati", "durante", "le", "vacanze.", "La", "mia", "migliore", "amica", "era", "stata", "in", "Spagna", "con", "tutta", "la", "sua", "famiglia.", "Ha", "portato", "anche", "delle", "camice", "ricamate", "per", "i", "compani", "di", "classe."],
+      "errors": [
+        { "wordIndex": 19, "correct": "belli", "options": ["belli", "beli", "bellli"] },
+        { "wordIndex": 41, "correct": "camicie", "options": ["camicie", "camice", "camiccie"] },
+        { "wordIndex": 45, "correct": "compagni", "options": ["compagni", "compani", "companii"] }
+      ]
+    }
+  ]
+}
